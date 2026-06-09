@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Joshua LP Player</title>
+<style>
+body{margin:0;background:#111;color:#fff;font-family:Arial,sans-serif}
+#bar{position:fixed;left:0;right:0;bottom:0;background:#1f1f1f;padding:10px;display:flex;gap:10px;align-items:center}
+button{font-size:20px}#info{flex:1}#progress{flex:2}
+</style></head><body>
+<div id="bar">
+<button id="prev">⏮</button><button id="play">▶️</button><button id="next">⏭</button>
+<div id="info">Joshua LP</div>
+<input id="progress" type="range" min="0" max="100" value="0">
+<input id="vol" type="range" min="0" max="1" step="0.01" value="1">
+</div>
+<audio id="audio"></audio>
+<script>
+const tracks=[
+{title:"Día de Mayo",src:"https://raw.githubusercontent.com/joshualpweb/music/main/audio/D%C3%ADa%20de%20Mayo.mp3"},
+{title:"Mercedes",src:"https://raw.githubusercontent.com/joshualpweb/music/main/audio/Mercedes.mp3"}
+];
+let i=0;
+const a=document.getElementById('audio'),info=document.getElementById('info');
+const play=document.getElementById('play'),next=document.getElementById('next'),prev=document.getElementById('prev'),progress=document.getElementById('progress'),vol=document.getElementById('vol');
+function load(){a.src=tracks[i].src;info.textContent=tracks[i].title;}
+load();
+play.onclick=()=>{if(a.paused){a.play();play.textContent='⏸️';}else{a.pause();play.textContent='▶️';}};
+next.onclick=()=>{i=(i+1)%tracks.length;load();a.play();play.textContent='⏸️';};
+prev.onclick=()=>{i=(i-1+tracks.length)%tracks.length;load();a.play();play.textContent='⏸️';};
+progress.oninput=()=>{if(a.duration)a.currentTime=progress.value/100*a.duration;};
+a.ontimeupdate=()=>{if(a.duration)progress.value=a.currentTime/a.duration*100;};
+vol.oninput=()=>a.volume=vol.value;
+</script></body></html>
